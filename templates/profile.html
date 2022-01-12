@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %} Educryption {% endblock %}
+
+{% block content %}
+
+<h1>User Information</h1>
+
+<p>Username:  {{ user.username }}</p>
+
+<p>Email:  {{ user.email }}</p>
+
+<p>First Name:  {{ user.first_name }}</p>
+
+<p>Last Name:  {{ user.last_name }}</p>
+
+
+
+
+<form>
+  <button class="btn btn-sm btn-primary" formmethod="GET" formaction="/users/{{ user.username }}/currencies/add">Add Currency</button>
+
+  <button class="btn btn-sm btn-danger" formmethod="POST" formaction="/users/{{ user.username }}/delete">Delete User</button>  
+</form>
+
+<div>
+  <!-- {% for feed in user.feedback %}
+    <div class='card my-4'>
+      <div class="card-body">      
+        
+        <h5 class="card-title text-info">{{ note.title }}
+          <form style="display:inline;">
+            <button class="btn alert-warning" formmethod="GET" formaction="/notes/{{ note.id }}/update"><i class="fa fa-pencil-square-o"></i></button>
+            <button class="btn btn-danger"formmethod="POST" formaction="/notes/{{ note.id }}/delete"><i class="fa fa-trash"></i></button>            
+          </form>
+        </h5>
+
+        <p>
+          {{ note.content }}
+        </p>
+
+      </div>
+    </div>
+  {% endfor %} -->
+
+</div>
+
+{% endblock %}

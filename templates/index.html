@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %} Educryption {% endblock %}
+
+{% block content %}
+
+<h1>Educryption</h1>
+
+
+<form id="crypto-form">
+  <div>Name: <input id="name"></div>
+
+  <button>Get it</button>
+</form>
+
+
+<div id="currency-list">
+  {% for c in currencies %}
+  <div data-id="{{ c.id }} class="card mb-3" style="width: 50rem;">
+    <div class="card-body">
+      <h5 class="card-title">{{ c.name }}</h5>
+      <h6 class="card-subtitle mb-2 text-muted">{{ c.symbol }}</h6>
+      <p class="card-text">some text
+      <a href="#" class="card-link">Website</a>
+      <a href="#" class="card-link">More Information</a>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock %}
+
+
+

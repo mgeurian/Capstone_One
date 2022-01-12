@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://unpkg.com/jquery"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+  <title>Educryption</title>
+</head>
+<body>
+  <div class="navbar navbar-light bg-primary justify-content-between mb-3">
+    <div class="container">
+      <a href="/" class="navbar-brand text-light"> Educryption Registration</a>
+      <form class="form-inline">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+      <ul class="nav navbar-nav flex-row float-right">
+        
+        <li class="nav-item">
+          <a class="nav-link pr-3 text-light" href="/login">Login</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link pr-3 text-light" href="/register">Sign up</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="container">
+    <h1>User Information</h1>
+
+    <p>Username:  {{ user.username }}</p>
+    
+    <p>Email:  {{ user.email }}</p>
+    
+    <p>First Name:  {{ user.first_name }}</p>
+    
+    <p>Last Name:  {{ user.last_name }}</p>
+  </div>
+
+  
+  
+  
+  <form>
+    <button class="btn btn-sm btn-primary" formmethod="GET" formaction="/users/{{ user.username }}/notes/add">Add Notes</button>
+  
+    <button class="btn btn-sm btn-danger" formmethod="POST" formaction="/users/{{ user.username }}/delete">Delete User</button>  
+  </form>
+
+
+  <div class="container">
+    <div class="card mb-3" style="width: 50rem;">
+      <div class="card-body">
+        <h5 class="card-title">Bitcoin</h5>
+        <h6 class="card-subtitle mb-2 text-muted">BTC</h6>
+        <p class="card-text">I originally wanted a description here. But will probably settle on a current market price, as most 'descriptions' can be too lengthy to put here.</p>
+        <a href="#" class="card-link">Website</a>
+        <a href="#" class="card-link">More Information</a>
+      </div>
+    </div>
+
+    <div class="card mb-3" style="width: 50rem;">
+      <div class="card-body">
+        <h5 class="card-title">Ethereum</h5>
+        <h6 class="card-subtitle mb-2 text-muted">ETH</h6>
+        <p class="card-text">Current Market Price: $359.60</p>
+        <a href="#" class="card-link">Website</a>
+        <a href="#" class="card-link">More Information</a>
+      </div>
+    </div>
+
+    <div class="card mb-3" style="width: 50rem;">
+      <div class="card-body">
+        <h5 class="card-title">Ripple</h5>XRP</h6>
+        <p class="card-text">Current Market Price: $0.240897</p>
+        <a href="#" class="card-link">Website</a>
+        <a href="#" class="card-link">More Information</a>
+      </div>
+    </div>      
+  </div>
