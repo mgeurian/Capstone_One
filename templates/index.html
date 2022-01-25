@@ -13,15 +13,14 @@
 </form>
 
 
-<div id="currency-list">
+<div id="currency-list" class="card-container" style="margin-top: 10px;">
   {% for c in currencies %}
-  <div data-id="{{ c.id }} class="card mb-3" style="width: 50rem;">
-    <div class="card-body">
-      <h5 class="card-title">{{ c.name }}</h5>
-      <h6 class="card-subtitle mb-2 text-muted">{{ c.symbol }}</h6>
-      <p class="card-text">some text
-      <a href="#" class="card-link">Website</a>
-      <a href="#" class="card-link">More Information</a>
+  <div data-id="{{ c.id }} class="card mb-3" style="width: 60rem; border: 1px black solid; border-radius: 4px; margin: 5px">
+    <div class="card-body" onclick>
+      <span class="card-body-cmcrank">{{ c.id }} - </span>
+      <span class="card-body-name">{{ c.name }} -- </span>
+      <span class="card-body-symbol">{{ c.symbol }}</span>
+      <span class="card-body-price">${{ c.quote["USD"]["price"] }}</span>
     </div>
   </div>
   {% endfor %}

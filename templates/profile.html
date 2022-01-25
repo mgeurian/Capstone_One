@@ -23,26 +23,19 @@
   <button class="btn btn-sm btn-danger" formmethod="POST" formaction="/users/{{ user.username }}/delete">Delete User</button>  
 </form>
 
-<div>
-  <!-- {% for feed in user.feedback %}
-    <div class='card my-4'>
-      <div class="card-body">      
-        
-        <h5 class="card-title text-info">{{ note.title }}
-          <form style="display:inline;">
-            <button class="btn alert-warning" formmethod="GET" formaction="/notes/{{ note.id }}/update"><i class="fa fa-pencil-square-o"></i></button>
-            <button class="btn btn-danger"formmethod="POST" formaction="/notes/{{ note.id }}/delete"><i class="fa fa-trash"></i></button>            
-          </form>
-        </h5>
 
-        <p>
-          {{ note.content }}
-        </p>
-
-      </div>
+  # ********** the information being looped below will be from the db_educryption
+<div id="currency-list" class="card-container" style="margin-top: 10px;">
+  {% for c in currencies %}
+  <div data-id="{{ c.id }} class="card mb-3" style="width: 60rem; border: 1px black solid; border-radius: 4px; margin: 5px">
+    <div class="card-body" onclick>
+      <span class="card-body-cmcrank">{{ c.id }} - </span>
+      <span class="card-body-name">{{ c.name }} -- </span>
+      <span class="card-body-symbol">{{ c.symbol }}</span>
+      <span class="card-body-price">${{ c.quote["USD"]["price"] }}</span>
     </div>
-  {% endfor %} -->
-
+  </div>
+  {% endfor %}
 </div>
 
 {% endblock %}

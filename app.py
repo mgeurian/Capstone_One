@@ -9,7 +9,7 @@ from secret import API_KEY
 
 from forms import RegisterForm, LoginForm
 
-from models import db, connect_db, User, Currency, Tag, Currency_Tag, URL, Currency_Url, User_Currency
+from models import db, connect_db, User, Currency, User_Currency
 
 from sqlalchemy.exc import IntegrityError
 
@@ -38,40 +38,48 @@ connect_db(app)
 # latest/listings
 # https://pro-api.coinmarketcap.com/v1/cryptocurrency/latest/listings?CMC_PRO_API_KEY=8e821d14-0fcc-4565-ae47-acb55c2848dc
 
-# ########## above already commented out ##############
-
-
-base_api = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/'
-api_key = '?CMC_PRO_API_KEY=' + API_KEY
-latest_listings_url = base_api + 'listings/latest' + api_key
-
-request = requests.get(latest_listings_url)
-results = request.json()
-
-
-data = results['data']
-
-
-for currency in data:
-    name = currency['name']
-    price = currency['quote']['USD']['price']
-
-    print(name + ' is ' + str(int(price)))
- 
-
-
-# ##########already commented out ##############
-# print(json.dumps(results, sort_keys=True, indent=4))
-
 
 @app.route('/')
 def home_page():
-    # return """<html><body><p>this is the / route"""
-    serialized_currencies = [c.serialize_currency() for c in Currency.query.all()]
+
+
+    base_api = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/'
+    api_key = '?CMC_PRO_API_KEY=' + API_KEY
+    latest_listings_url = base_api + 'listings/latest' + api_key
+
+
+    # ************* best used for getting single cryptocurrency information *************
+
+    # latest_quotes_url = base_api + 'quotes/latest' + api_key
+    # request = requests.get(latest_quotes_url)
+    # results = request.json()
+    # data = results['data']
+
+    # **************************
+
+    request = requests.get(latest_listings_url)
+    results = request.json()
+    data = results['data']
+
+    return render_template('index.html', currencies=data)
+
+    # **************************
+    # **************************
+
+
+    # serialized_currencies = [c.serialize_currency() for c in Currency.query.all()]
+
+
+    # # ****** IN DEVELOPMENT --  only pulling one record for simplicity ******
+    # currencies = jsonify(serialized_currencies)
+    # currencies = currencies.data
     # print(currencies)
-    response_json = jsonify(currencies=serialized_currencies)
-    return response_json
-    # return render_template('index.html', currencies=response_json)
+    # return currencies
+    # return render_template('index.html', currencies=currencies.data[0])
+
+    # **************************
+    # **************************
+
 
 
 
@@ -93,11 +101,19 @@ def home_page():
     # **************************
 
 
+
+
     # this block will be placed into the home_page route
     # *********** this block gets ALL currencies using the map endpoint ***********
     # take the response, serialize it, add it to the db, commit it to the db, repeat
     # to serialize a loop look at app.py in flask/rest/dessert app 
     # serialized = serialize(c) for c in response_json['data']
+
+
+    # ******************* using query parameters for user list of 'favorited' currencies CMC ID Map ******************** 
+    # Optionally pass a comma-separated list of cryptocurrency symbols to return CoinMarketCap IDs for. If this option is passed, other options will be ignored.
+
+
 
 
 
@@ -220,7 +236,13 @@ def show_user(username):
     return render_template("profile.html", user=user)
 
 #  ********** EDIT USER'S PROFILE **********
-#  to be implemented
+
+@app.route('/users/<username>')
+def edit_user(username):
+
+    if "username" not in session:
+        flash("Please login first!", "danger")
+        return redirect(url_for('home_page'))
 
 
 #  ********** EDIT USER'S CURRENCIES **********
