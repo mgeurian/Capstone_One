@@ -1,13 +1,22 @@
-const BASE_URL = `http://127.0.0.1:5000`;
-const CMC_URL = `http:`;
+const BASE_URL = `http://${location.host}`;
 
-async function getCurrencies(e) {
-	e.preventDefault();
+const username = "{{ session['username'] }}";
 
-	const res = await axios.get(
-		`https://pro-api.coinmarketcap.com/v1/cryptocurrency/map?CMC_PRO_API_KEY=8e821d14-0fcc-4565-ae47-acb55c2848dc`
-	);
-}
+// async function getCurrencies(e) {
+// 	e.preventDefault();
+
+// 	const res = await axios.get(
+// 		`https://pro-api.coinmarketcap.com/v1/cryptocurrency/map?CMC_PRO_API_KEY=8e821d14-0fcc-4565-ae47-acb55c2848dc`
+// 	);
+// }
+
+// async function getListedCurrencies(e) {
+// 	e.preventDefault();
+
+// 	const res = axios.get(
+// 		`https://pro-api.coinmarketap.com/v1/cryptcurrency/map?CMC_PRO_API_KEY=8e821d14-0fcc-4565-ae47-acb55c2848dc`
+// 	);
+// }
 
 async function processForm(e) {
 	e.preventDefault();
@@ -15,7 +24,7 @@ async function processForm(e) {
 	// data collection for api
 
 	let name = $('#name').val();
-
+	// take value .toLowerCase() and use the get request to retrieve
 	const res = await axios.post(`http://127.0.0.1:5000/api/cryptodata`, { name });
 
 	console.log(res.data.currencies[1].slug);
@@ -28,9 +37,6 @@ async function processForm(e) {
 }
 
 function handleResponse(res) {
-	// {% for error in field.errors %}
-	// <span class="form-text text-danger"> {{ error }} </span>
-	// {% endfor %}
 	let currency_list;
 
 	res.map(function(val, idx) {
@@ -48,49 +54,29 @@ function handleResponse(res) {
 
 $('#crypto-form').on('submit', processForm);
 
-// # **************************
-// # **************************
-// # **************************
-// # **************************
+// add a currency
 
-// add a cupcake
+$('.add-currency').on('click', async function(e) {
+	let username = e.target.getAttribute('data-username');
+	let currencyId = e.target.getAttribute('data-currency-id');
 
-$('#form-newCupcake').on('submit', async function(e) {
-	e.preventDefault();
-
-	let flavor = $('#input-flavor').val();
-	let size = $('#input-size').val();
-	let image = $('#input-image').val();
-	let rating = $('#input-rating').val();
-
-	const res = await axios.post(`${BASE_URL}/api/cupcakes`, { flavor, rating, size, image });
+	const res = await axios.post(`${BASE_URL}/api/users/${username}/${currencyId}/add`);
 
 	console.log(res);
-	let newCupcake = $(generateCupcake(res.data.cupcake));
-	$('#cupcakes-list').append(newCupcake);
-	$('#form-newCupcake').trigger('reset');
 });
 
-// delete cupcakes
+// remove a currency
 
-$('#cupcakes-list').on('click', '.delete-cupcake', async function(e) {
-	e.preventDefault();
+$('.remove-currency').on('click', async function(e) {
+	console.log('delete has been clicked');
+	let $currency = $(e.target).closest('.card');
+	let username = e.target.getAttribute('data-username');
+	let currencyId = e.target.getAttribute('data-currency-id');
 
-	let $cupcake = $(e.target).closest('div');
-	let cupcakeId = $cupcake.attr('data-cupcake-id');
+	const res = await axios.delete(`${BASE_URL}/api/users/${username}/${currencyId}/delete`);
+	$currency.remove();
 
-	await axios.delete(`${BASE_URL}/api/cupcakes/${cupcakeId}`);
-	$cupcake.remove();
+	console.log(res);
+
+	// update current div by changing delete button ==> add button
 });
-
-// # **************************
-// # **************************
-// # **************************
-// # **************************
-
-// return `
-// <div class="col-4" data-cupcake-id=${c.id}>
-//     <button class="delete-cupcake">REMOVE</button>
-//   <img class="img-thumbnail" src="${c.image}">
-// </div>
-// `

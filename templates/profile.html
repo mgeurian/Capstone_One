@@ -18,24 +18,34 @@
 
 
 <form>
-  <button class="btn btn-sm btn-primary" formmethod="GET" formaction="/users/{{ user.username }}/currencies/add">Add Currency</button>
+  <!-- <button class="btn btn-sm btn-primary" formmethod="GET" formaction="/users/{{ user.username }}/currencies/add">Add Currency</button> -->
 
   <button class="btn btn-sm btn-danger" formmethod="POST" formaction="/users/{{ user.username }}/delete">Delete User</button>  
+  <button class="btn btn-sm btn-primary" formaction="/">View All Currencies</button>
 </form>
 
 
-  # ********** the information being looped below will be from the db_educryption
-<div id="currency-list" class="card-container" style="margin-top: 10px;">
-  {% for c in currencies %}
-  <div data-id="{{ c.id }} class="card mb-3" style="width: 60rem; border: 1px black solid; border-radius: 4px; margin: 5px">
-    <div class="card-body" onclick>
-      <span class="card-body-cmcrank">{{ c.id }} - </span>
-      <span class="card-body-name">{{ c.name }} -- </span>
-      <span class="card-body-symbol">{{ c.symbol }}</span>
-      <span class="card-body-price">${{ c.quote["USD"]["price"] }}</span>
+  <!-- ********** on a user's profile page, the information being looped below will be from the db_educryption using the list of currency_ids provided from CMC by putting them into a list and then calling the CMC API to populate -->
+{% if currencies %}
+    <div id="currency-list" class="card-container" style="margin-top: 10px;">
+      {% for key, value in currencies.items() %}
+      <div data-id="{{ value.id }}" class="card mb-3" style="width: 60rem; border: 1px black solid; border-radius: 4px; margin: 5px">
+        <div class="card-body">
+          <span class="card-body-name">{{ value.name }}</span>
+          <span class="card-body-symbol">{{ value.symbol }}</span>
+          <span>
+            <button class="remove-currency" data-username="{{ session['username'] }}" data-currency-id="{{ value.id }}">Remove</button>
+          </span>  
+        </div>
+      </div>
+      {% endfor %}
     </div>
+{% else %}
+  <div>
+    <span>
+      <a href="/">Add some favorite currencies?</a>
+    </span>
   </div>
-  {% endfor %}
-</div>
+{% endif %}
 
 {% endblock %}

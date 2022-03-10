@@ -1,3 +1,4 @@
+from pyexpat import model
 from flask_sqlalchemy import SQLAlchemy
 from user_models import User
 from flask_bcrypt import Bcrypt
@@ -60,39 +61,6 @@ class User(db.Model):
 
 
 
-class Currency(db.Model):
-    """ CRYPTOCURRENCY. """
-
-    __tablename__ = "currencies"
-
-    id = db.Column(db.Integer, primary_key=True)
-
-    name = db.Column(db.String, nullable=False)
-
-    symbol = db.Column(db.String, nullable=False)
-    
-    slug = db.Column(db.String, nullable=False)
-
-    logo = db.Column(db.String)
-
-    description = db.Column(db.String)
-
-    price = db.Column(db.Float)
-
-
-    def serialize_currency(self):
-        return {
-            'id': self.id,
-            'name': self.name,
-            'symbol': self.symbol,
-            'slug': self.slug,
-            'logo': self.logo,
-            'description': self.description,
-            'price': self.price
-        }
-
-
-
 class User_Currency(db.Model):
     """ USER_CURRENCY. """
 
@@ -102,4 +70,13 @@ class User_Currency(db.Model):
 
     username = db.Column(db.String, db.ForeignKey('users.username'))
 
-    currency_id = db.Column(db.Integer, db.ForeignKey('currencies.id'))
+    currency_id = db.Column(db.Integer)
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'username': self.username,
+            'currency_id': self.currency_id
+    }
+
+
