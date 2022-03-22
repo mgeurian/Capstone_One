@@ -30,13 +30,19 @@
     <div id="currency-list" class="card-container" style="margin-top: 10px;">
       {% for key, value in currencies.items() %}
       <div data-id="{{ value.id }}" class="card mb-3" style="width: 60rem; border: 1px black solid; border-radius: 4px; margin: 5px">
-        <div class="card-body">
-          <span class="card-body-name">{{ value.name }}</span>
-          <span class="card-body-symbol">{{ value.symbol }}</span>
-          <span>
-            <button class="remove-currency" data-username="{{ session['username'] }}" data-currency-id="{{ value.id }}">Remove</button>
-          </span>  
-        </div>
+        <a href="/currency/{{ value.id }}">
+          <div class="card-body">
+            <span class="currency-info">
+              <span class="card-body-name">{{ value.name }}</span>
+              <span class="card-body-symbol">{{ value.symbol }}</span>            
+            </span>
+            <span id="currencyButtons" style="float: right">
+              <span>
+                <button class="remove-currency" data-username="{{ session['username'] }}" data-currency-id="{{ value.id }}">Remove</button>
+              </span>
+            </span>
+          </div>
+        </a>
       </div>
       {% endfor %}
     </div>
@@ -49,3 +55,6 @@
 {% endif %}
 
 {% endblock %}
+
+
+</span>

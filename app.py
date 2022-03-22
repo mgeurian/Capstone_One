@@ -33,43 +33,39 @@ def home_page():
     base_api = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/'
     api_key = '?CMC_PRO_API_KEY=' + API_KEY
     latest_listings_url = base_api + 'listings/latest' + api_key
-
-
-    # ************* best used for getting single cryptocurrency information *************
-
-    # latest_quotes_url = base_api + 'quotes/latest' + api_key
-    # request = requests.get(latest_quotes_url)
-    # results = request.json()
-    # data = results['data']
-
-    # **************************
-
     request = requests.get(latest_listings_url)
     results = request.json()
     data = results['data']
-    # print(data)
     return render_template('index.html', currencies=data)
 
-# with response data, loop through and serialize each record for json, then send it back
 
-# @app.route('/api/cryptodata', methods=["POST"])
-# def update_crypto_data():
-    """Get CMC response."""
+    # *********** GET SINGLE CURRENCY BY SLUG (usually lowercase currency name) ***********
 
-    # id = request.json["crypto_id"]
-    # name = request.json["name"]
+@app.route('/currency/<slug>')
+def search_for_currency(slug):
+    print('this is the slug: ' + slug)
+    base_api = 'https://pro-api.coinmarketcap.com/v2/cryptocurrency/info?'
+    api_key = 'CMC_PRO_API_KEY=' + API_KEY
+    individual_currency_id_url = base_api + api_key + '&slug=' + slug
 
+    request = requests.get(individual_currency_id_url)
+    results = request.json()
+    print(results)
 
-    # *********** this block gets currencies by slug ***********
+    data = results['data']
 
-# @app.route('/currency/<slug>')
-# def search_for_currency():
+    list_keys = list(data.keys())[0]
+    string_keys = str(list_keys)
+    print('this is data key: ', list(data.keys())[0])
     
+    currency_data = results['data'][string_keys]
 
-    # by slug
-    # res = requests.get(base_api + 'info' + api_key + '&slug=' + name)
+    print('this is the currency_data: ', currency_data)
+    
+    return render_template('single_currency.html', currency=currency_data)
 
-#  ********** GET SINGLE CURRENCY **********
+
+#  ********** GET SINGLE CURRENCY BY CMC ID **********
 
 @app.route('/currency/<int:id>')
 def get_currency(id):
@@ -81,16 +77,21 @@ def get_currency(id):
 
     request = requests.get(individual_currency_id_url)
     results = request.json()
+    
     # print(results)
     data = results['data'][strid]
-    # print('strid')
+    print('strid')
     print(data)
     return render_template('single_currency.html', currency=data)
 
 
 
 
-
+    # ******************************************************************************
+    # ******************************************************************************
+    # ********************* user routes are listed below ***************************
+    # ******************************************************************************
+    # ******************************************************************************
 
 #  ********** REGISTER NEW USER **********
 
@@ -175,12 +176,11 @@ def show_user(username):
 
     request = requests.get(users_currencies)
     results = request.json()
-    print(results['data'])
+    print(results['data']) 
     user_currency_data = results['data']
     print(user_currency_data)
 
     return render_template("profile.html", user=user, currencies=user_currency_data)
-
 
 
 #  ********** ADD USER CURRENCY **********
@@ -193,6 +193,10 @@ def create_user_currency(username, id):
 
     db.session.add(new_user_currency)
     db.session.commit()
+    flash("Currency added", "info")
+
+    # user_currency = User_Currency.query.filter_by(username=username).all()
+
     response_json = jsonify(currency=new_user_currency.serialize())
     return (response_json, 201)
 
