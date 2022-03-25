@@ -21,13 +21,9 @@
           </div> 
           <div class="col-md-3">
             {% if session ['username'] %}
-            <span id="currencyButtons" style="margin: auto; margin-top: auto; margin-bottom: auto;">
-              <span id="addCurrency">
+            <span class="currencyButtons" style="margin: auto; margin-top: auto; margin-bottom: auto;">
                 <button class="add-currency" data-username="{{ session['username'] }}" data-currency-id="{{ currency.id }}">Add</button>
-              </span>
-              <span id="removeCurrency">
                 <button class="remove-currency" data-username="{{ session['username'] }}" data-currency-id="{{ currency.id }}">Remove</button>
-              </span>           
             </span>
             {% endif %}
           </div>    
@@ -40,6 +36,6 @@
         <a href="/">Error has occurred. Click to return.</a>
       </span>
     </div>
-{% endif %}
+  {% endif %}
 
 {% endblock %}

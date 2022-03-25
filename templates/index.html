@@ -6,39 +6,33 @@
 <h1>Educryption</h1>
 
 
-<form id="crypto-form">
-  <div>Cryptocurrency: <input id="name"><span><button>Get it</button></span></div>
-
-  <button>Get it</button>
+<form id="crypto-form" method="get" action="/search">
+  <div>Cryptocurrency: <input id="name" name="slug"><span><button type="submit">Get it</button></span></div>
 </form>
 
 <div id="currency-list" class="card-container" style="margin-top: 10px;">
   {% for c in currencies %}
   <div data-id="{{ c.id }}" class="card mb-3" style="width: 60rem; border: 1px black solid; border-radius: 4px; margin: 5px">
-    <a href="/currency/{{ c.id }}">
-      <div class="card-body">
-        <div class="currency-info">
+    <div class="card-body">
+      <div class="currency-info">
+        <a href="/currency/{{ c.id }}">
+
           <span style="text-decoration: inherit; color: black;">
             <span class="card-body-cmcrank">{{ c.id }} - </span>
             <span class="card-body-name">{{ c.name }} -- </span>
             <span class="card-body-symbol">{{ c.symbol }}</span>
             <span class="card-body-price">${{ "%.2f"|format(c.quote["USD"]["price"]) }}</span>          
           </span>
-          {% if session ['username'] %}
-          <span id="currencyButtons" style="float: right">
+        </a>
+        {% if session ['username'] %}
+        <span class="currencyButtons" style="float: right">
+            <button class="add-currency" data-username="{{ session['username'] }}" data-currency-id="{{ c.id }}">Add</button>
+            <button class="remove-currency" data-username="{{ session['username'] }}" data-currency-id="{{ c.id }}">Remove</button>
+        </span>
+        {% endif %}
 
-            <span id="addCurrency">
-              <button class="add-currency" data-username="{{ session['username'] }}" data-currency-id="{{ c.id }}">Add</button>
-            </span>
-            <span id="removeCurrency">
-              <button class="remove-currency" data-username="{{ session['username'] }}" data-currency-id="{{ c.id }}">Remove</button>
-            </span>           
-          </span>
-          {% endif %}
-  
-        </div>
       </div>
-    </a>
+    </div>
   </div>
   {% endfor %}
 </div>

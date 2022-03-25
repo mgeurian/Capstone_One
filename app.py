@@ -29,7 +29,7 @@ connect_db(app)
 
 @app.route('/')
 def home_page():
-
+    """ displays a list of the top 100 currencies """
     base_api = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/'
     api_key = '?CMC_PRO_API_KEY=' + API_KEY
     latest_listings_url = base_api + 'listings/latest' + api_key
@@ -38,11 +38,7 @@ def home_page():
     data = results['data']
     return render_template('index.html', currencies=data)
 
-
-    # *********** GET SINGLE CURRENCY BY SLUG (usually lowercase currency name) ***********
-
-@app.route('/currency/<slug>')
-def search_for_currency(slug):
+def get_by_slug(slug):
     print('this is the slug: ' + slug)
     base_api = 'https://pro-api.coinmarketcap.com/v2/cryptocurrency/info?'
     api_key = 'CMC_PRO_API_KEY=' + API_KEY
@@ -56,12 +52,27 @@ def search_for_currency(slug):
 
     list_keys = list(data.keys())[0]
     string_keys = str(list_keys)
-    print('this is data key: ', list(data.keys())[0])
     
     currency_data = results['data'][string_keys]
 
     print('this is the currency_data: ', currency_data)
-    
+
+    return currency_data
+
+
+    # *********** GET SINGLE CURRENCY BY SLUG (usually lowercase currency name) ***********
+
+@app.route('/currency/<slug>')
+def get_currency_view(slug):
+    """ display a currency by currency slug """
+    currency_data = get_by_slug(slug)
+    return render_template('single_currency.html', currency=currency_data)
+
+@app.route('/search')
+def search_for_currency():
+    """ display a currency by currency slug """
+    slug = request.args.get('slug')
+    currency_data = get_by_slug(slug)
     return render_template('single_currency.html', currency=currency_data)
 
 
@@ -69,6 +80,7 @@ def search_for_currency(slug):
 
 @app.route('/currency/<int:id>')
 def get_currency(id):
+    """ display a currency by coinmarketcap's currency id """
     strid = str(id)
     base_api = 'https://pro-api.coinmarketcap.com/v2/cryptocurrency/info?'
     api_key = 'CMC_PRO_API_KEY=' + API_KEY
@@ -80,7 +92,6 @@ def get_currency(id):
     
     # print(results)
     data = results['data'][strid]
-    print('strid')
     print(data)
     return render_template('single_currency.html', currency=data)
 
@@ -97,6 +108,7 @@ def get_currency(id):
 
 @app.route('/register', methods=['GET', 'POST'])
 def register_user():
+    """ register a user and take to profile page """
     form = RegisterForm()
     if form.validate_on_submit():
         username = form.username.data
@@ -124,6 +136,7 @@ def register_user():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login_user():
+    """ login a user and take to profile page """
     form = LoginForm()
     if form.validate_on_submit():
         username = form.username.data
@@ -146,6 +159,7 @@ def login_user():
 
 @app.route('/logout')
 def logout_user():
+    """ logout a user and remove session data """
     session.pop('username')
     flash("Goodbye!", "info")
     return redirect(url_for('home_page'))
@@ -155,6 +169,7 @@ def logout_user():
 
 @app.route('/users/<username>')
 def show_user(username):
+    """ display a user's information and their currencies """
 
     if "username" not in session:
         flash("Please login first!", "danger")
@@ -164,22 +179,19 @@ def show_user(username):
 
     # returns a list of the current users currencies    
     user_currency = User_Currency.query.filter_by(username=username).all()
-
-    # convert integer ids => string to use in api call
-    currency_ids_list = [str(c.currency_id) for c in user_currency]
-    currency_ids_string = ",".join(currency_ids_list)
-
-    # take list of users currencies and get data from CMC
-    base_api = 'https://pro-api.coinmarketcap.com/v2/cryptocurrency/info?'
-    api_key = 'CMC_PRO_API_KEY=' + API_KEY
-    users_currencies = base_api + api_key + '&id=' + currency_ids_string
-
-    request = requests.get(users_currencies)
-    results = request.json()
-    print(results['data']) 
-    user_currency_data = results['data']
-    print(user_currency_data)
-
+    if not user_currency:
+        # convert integer ids => string to use in api call
+        user_currency_data = 0
+    else:
+        currency_ids_list = [str(c.currency_id) for c in user_currency]
+        currency_ids_string = ",".join(currency_ids_list)
+        # take list of users currencies and get data from CMC
+        base_api = 'https://pro-api.coinmarketcap.com/v2/cryptocurrency/info?'
+        api_key = 'CMC_PRO_API_KEY=' + API_KEY
+        users_currencies = base_api + api_key + '&id=' + currency_ids_string
+        request = requests.get(users_currencies)
+        results = request.json()
+        user_currency_data = results['data']
     return render_template("profile.html", user=user, currencies=user_currency_data)
 
 
@@ -187,16 +199,10 @@ def show_user(username):
 
 @app.route('/api/users/<username>/<int:id>/add', methods=["POST"])
 def create_user_currency(username, id):
-    new_user_currency = User_Currency(
-        username=username,
-        currency_id=id)
-
+    """ add a currency to user's list of currencies """
+    new_user_currency = User_Currency(username=username, currency_id=id)
     db.session.add(new_user_currency)
     db.session.commit()
-    flash("Currency added", "info")
-
-    # user_currency = User_Currency.query.filter_by(username=username).all()
-
     response_json = jsonify(currency=new_user_currency.serialize())
     return (response_json, 201)
 
@@ -206,12 +212,11 @@ def create_user_currency(username, id):
 
 @app.route('/api/users/<username>/<int:id>/delete', methods=["DELETE"])
 def delete_currency(username, id):
-    # user_currency = User_Currency.query.get_or_404(username, id)
+    """ remove a user's currency from the database """
     user_currency = User_Currency.query.filter_by(username=username).filter_by(currency_id=id).first_or_404()
-
     db.session.delete(user_currency)
     db.session.commit()
-    response_json = jsonify(message="user's currency has been deleted")
+    response_json = jsonify(message="currency has been removed")
     return response_json
 
 
@@ -220,7 +225,7 @@ def delete_currency(username, id):
 
 @app.route("/users/<username>/delete", methods=["POST"])
 def delete_user(username):
-    """ remove a user and notes from the database """
+    """ remove a user and user's currencies from the database """
 
     if "username" not in session:
         flash("Please login first", "danger")
@@ -231,7 +236,7 @@ def delete_user(username):
         db.session.delete(user)
         db.session.commit()
         session.pop('username')
-        flash("The user and their notes have been deleted!", "danger")
+        flash("The user and their currencies have been deleted!", "danger")
         return redirect(url_for('home_page'))
 
 
