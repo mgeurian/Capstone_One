@@ -22,8 +22,11 @@
           <div class="col-md-3">
             {% if session ['username'] %}
             <span class="currencyButtons" style="margin: auto; margin-top: auto; margin-bottom: auto;">
-                <button class="add-currency" data-username="{{ session['username'] }}" data-currency-id="{{ currency.id }}">Add</button>
+                {% if currency.id in user_currencies %}
                 <button class="remove-currency" data-username="{{ session['username'] }}" data-currency-id="{{ currency.id }}">Remove</button>
+                {% else %}
+                <button class="add-currency" data-username="{{ session['username'] }}" data-currency-id="{{ currency.id }}">Add</button>
+                {% endif %}
             </span>
             {% endif %}
           </div>    

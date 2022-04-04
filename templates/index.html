@@ -12,6 +12,7 @@
 
 <div id="currency-list" class="card-container" style="margin-top: 10px;">
   {% for c in currencies %}
+
   <div data-id="{{ c.id }}" class="card mb-3" style="width: 60rem; border: 1px black solid; border-radius: 4px; margin: 5px">
     <div class="card-body">
       <div class="currency-info">
@@ -24,10 +25,15 @@
             <span class="card-body-price">${{ "%.2f"|format(c.quote["USD"]["price"]) }}</span>          
           </span>
         </a>
-        {% if session ['username'] %}
+
+
+        {% if session['username'] %}
         <span class="currencyButtons" style="float: right">
-            <button class="add-currency" data-username="{{ session['username'] }}" data-currency-id="{{ c.id }}">Add</button>
-            <button class="remove-currency" data-username="{{ session['username'] }}" data-currency-id="{{ c.id }}">Remove</button>
+            {% if c.id in user_currencies %}
+            <button onclick="toggleFavorite()" class="remove-currency" data-username="{{ session['username'] }}" data-currency-id="{{ c.id }}">Remove</button>
+            {% else %}
+            <button onclick="toggleFavorite()" class="add-currency" data-username="{{ session['username'] }}" data-currency-id="{{ c.id }}">Add</button>
+            {% endif %}
         </span>
         {% endif %}
 

@@ -27,17 +27,6 @@ debug = DebugToolbarExtension(app)
 connect_db(app)
 
 
-@app.route('/')
-def home_page():
-    """ displays a list of the top 100 currencies """
-    base_api = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/'
-    api_key = '?CMC_PRO_API_KEY=' + API_KEY
-    latest_listings_url = base_api + 'listings/latest' + api_key
-    request = requests.get(latest_listings_url)
-    results = request.json()
-    data = results['data']
-    return render_template('index.html', currencies=data)
-
 def get_by_slug(slug):
     print('this is the slug: ' + slug)
     base_api = 'https://pro-api.coinmarketcap.com/v2/cryptocurrency/info?'
@@ -46,7 +35,6 @@ def get_by_slug(slug):
 
     request = requests.get(individual_currency_id_url)
     results = request.json()
-    print(results)
 
     data = results['data']
 
@@ -55,9 +43,31 @@ def get_by_slug(slug):
     
     currency_data = results['data'][string_keys]
 
-    print('this is the currency_data: ', currency_data)
-
     return currency_data
+
+def get_users_currency():
+    if "username" not in session:
+        currency_ids_list = []
+        return currency_ids_list
+    else:
+        user_currency = User_Currency.query.filter_by(username=session['username']).all()
+        currency_ids_list = [c.currency_id for c in user_currency]
+        return currency_ids_list
+
+
+@app.route('/')
+def home_page():
+
+    users_currencies = get_users_currency()
+        
+    """ displays a list of the top 100 currencies """
+    base_api = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/'
+    api_key = '?CMC_PRO_API_KEY=' + API_KEY
+    latest_listings_url = base_api + 'listings/latest' + api_key
+    request = requests.get(latest_listings_url)
+    results = request.json()
+    data = results['data']
+    return render_template('index.html', currencies=data, user_currencies=users_currencies)
 
 
     # *********** GET SINGLE CURRENCY BY SLUG (usually lowercase currency name) ***********
@@ -80,23 +90,22 @@ def search_for_currency():
 
 @app.route('/currency/<int:id>')
 def get_currency(id):
+    
+    """ gets user's currencies to compare and render correct add/remove button """
+
+    users_currencies = get_users_currency()
+
     """ display a currency by coinmarketcap's currency id """
     strid = str(id)
     base_api = 'https://pro-api.coinmarketcap.com/v2/cryptocurrency/info?'
     api_key = 'CMC_PRO_API_KEY=' + API_KEY
     individual_currency_id_url = base_api + api_key + '&id=' + strid
 
-
     request = requests.get(individual_currency_id_url)
     results = request.json()
     
-    # print(results)
     data = results['data'][strid]
-    print(data)
-    return render_template('single_currency.html', currency=data)
-
-
-
+    return render_template('single_currency.html', currency=data, user_currencies=users_currencies)
 
     # ******************************************************************************
     # ******************************************************************************
@@ -218,7 +227,6 @@ def delete_currency(username, id):
     db.session.commit()
     response_json = jsonify(message="currency has been removed")
     return response_json
-
 
 
 #  ********** DELETE USER **********
