@@ -2,16 +2,12 @@ from flask import Flask, request, render_template, jsonify, session, flash, url_
 import requests
 import json
 from requests import Request, Session
-
 from flask_debugtoolbar import DebugToolbarExtension
-
 from secret import API_KEY
-
 from forms import RegisterForm, LoginForm
-
 from models import db, connect_db, User, User_Currency
-
 from sqlalchemy.exc import IntegrityError
+import os
 
 
 app = Flask(__name__)
@@ -19,7 +15,11 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///db_educryption'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
-app.config['SECRET_KEY'] = "educryption"
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'secretkey')
+print('*****************')
+print('*****************')
+print('*****************')
+print(app.config['SECRET_KEY'])
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
 debug = DebugToolbarExtension(app)
