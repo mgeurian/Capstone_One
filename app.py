@@ -3,7 +3,7 @@ import requests
 import json
 from requests import Request, Session
 from flask_debugtoolbar import DebugToolbarExtension
-from secret import API_KEY
+# from secret import API_KEY
 from forms import RegisterForm, LoginForm
 from models import db, connect_db, User, User_Currency
 from sqlalchemy.exc import IntegrityError
@@ -16,7 +16,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'postgres
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'secretkey')
-app.config['API_KEY'] = os.environ.get('API_KEY')
+app.config['API_KEY'] = os.environ.get('API_KEY', '8e821d14-0fcc-4565-ae47-acb55c2848dc')
 print('*****************')
 print('*****************')
 print('*****************')
