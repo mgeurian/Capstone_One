@@ -8,11 +8,22 @@ from forms import RegisterForm, LoginForm
 from models import db, connect_db, User, User_Currency
 from sqlalchemy.exc import IntegrityError
 import os
+import re
 
+# uri = os.getenv("DATABASE_URL")  # or other relevant config var
+# if uri.startswith("postgres://"):
+#     uri = uri.replace("postgres://", "postgresql://", 1)
+# # rest of connection code using the connection string `uri`
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'postgresql:///db_educryption')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'postgresql:///db_educryption').replace("://", "ql://", 1)
+
+# if app.config['SQLALCHEMY_DATABASE_URI'].startswith("postgres://"):
+#     app.config['SQLALCHEMY_DATABASE_URI'] = app.config['SQLALCHEMY_DATABASE_URI'].replace("postgres://", "postgresql://", 1)
+
+# app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get('DATABASE_URL', "postgres:///").replace("://", "ql://", 1)
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'secretkey')
