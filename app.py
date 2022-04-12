@@ -28,11 +28,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'secretkey')
 app.config['API_KEY'] = os.environ.get('API_KEY', '8e821d14-0fcc-4565-ae47-acb55c2848dc')
-print('*****************')
-print('*****************')
-print('*****************')
-print(app.config['API_KEY'])
-print(app.config['SECRET_KEY'])
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
 debug = DebugToolbarExtension(app)
