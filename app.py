@@ -204,7 +204,7 @@ def show_user(username):
 
 #  ********** ADD USER CURRENCY **********
 
-@app.route('/api/users/<username>/<int:id>/add', methods=["POST"])
+@app.route('/api/users/<username>/<int:id>/add/', methods=["POST"])
 def create_user_currency(username, id):
     """ add a currency to user's list of currencies """
     new_user_currency = User_Currency(username=username, currency_id=id)
@@ -217,7 +217,7 @@ def create_user_currency(username, id):
 
 # ********** DELETE USER CURRENCY **********
 
-@app.route('/api/users/<username>/<int:id>/delete', methods=["DELETE"])
+@app.route('/api/users/<username>/<int:id>/delete/', methods=["DELETE"])
 def delete_currency(username, id):
     """ remove a user's currency from the database """
     user_currency = User_Currency.query.filter_by(username=username).filter_by(currency_id=id).first_or_404()
