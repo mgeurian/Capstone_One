@@ -8,10 +8,10 @@ const username = "{{ session['username'] }}";
 // # ******************************************************************************
 // # ******************************************************************************
 
-function toggleFavorite(e) {
-	if (e.target.innerHTML === 'Remove') {
+function toggleFavorite() {
+	if (target.innerHTML === 'Remove') {
 		removeCurrency();
-	} else if (e.target.innerHTML === 'Add') {
+	} else if (target.innerHTML === 'Add') {
 		addCurrency();
 	}
 }
