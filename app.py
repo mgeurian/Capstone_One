@@ -73,15 +73,17 @@ def home_page():
 @app.route('/currency/<slug>')
 def get_currency_view(slug):
     """ display a currency by currency slug """
+    users_currencies = get_users_currency()
     currency_data = get_by_slug(slug)
-    return render_template('single_currency.html', currency=currency_data)
+    return render_template('single_currency.html', currency=currency_data, user_currencies=users_currencies)
 
 @app.route('/search')
 def search_for_currency():
     """ display a currency by currency slug """
+    users_currencies = get_users_currency()
     slug = request.args.get('slug')
     currency_data = get_by_slug(slug)
-    return render_template('single_currency.html', currency=currency_data)
+    return render_template('single_currency.html', currency=currency_data, user_currencies=users_currencies)
 
 
 #  ********** GET SINGLE CURRENCY BY CMC ID **********
