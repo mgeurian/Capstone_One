@@ -1,4 +1,4 @@
-const BASE_URL = `http://${location.host}`;
+const BASE_URL = `https://${location.host}`;
 
 const username = "{{ session['username'] }}";
 
