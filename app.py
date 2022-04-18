@@ -27,6 +27,7 @@ API_KEY = '8e821d14-0fcc-4565-ae47-acb55c2848dc'
 
 def get_by_slug(slug):
     print('this is the slug: ' + slug)
+    slug = slug.lower()
     base_api = 'https://pro-api.coinmarketcap.com/v2/cryptocurrency/info?'
     api_key = 'CMC_PRO_API_KEY=' + API_KEY
     individual_currency_id_url = base_api + api_key + '&slug=' + slug
