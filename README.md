@@ -1,15 +1,17 @@
-#Educryption
+# Educryption
 
-##Description
+## Description
 Educryption is a place for users to add and follow a list of cryptocurrencies in which a user is interested.
 This is a full-stack application written with Python, Javascript, jQuery, Bootstrap, Flask, Postgresql, and Bootstrap for styling.
 This application utilizes the CoinMarketCap API.
 This application was created as a Capstone Project for the Springboard Software Engineering Program.
-A live version of this project can be found here: https://educryption.herokuapp.com/
 
-The repository for the Educryption can be found at: https://github.com/mgeurian/Capstone_One
+A live version of this project can be found here: [Educryption](https://educryption.herokuapp.com/)
 
-##Current Features
+The repository for the Educryption can be found at: [Matt's Github](https://github.com/mgeurian/Capstone_One)
+
+## Current Features
+
 - An unregistered user can search for a specific cryptocurrency.
 - An unregistered user can view information about a specific cryptocurrency.
 
@@ -20,7 +22,7 @@ The repository for the Educryption can be found at: https://github.com/mgeurian/
 - A user can add and remove cryptocurrencies.
 - A user can delete their account.
 
-##Additional Future Features:
+## Additional Future Features:
 
 - Users will be able to add currencies they own, along with amounts/values.
 - CoinMarketCap API will be utilized to get exchange information to allow users to link their exchange accounts.
@@ -28,7 +30,7 @@ The repository for the Educryption can be found at: https://github.com/mgeurian/
 - Users will be able to blog and write articles about what they think of specific cryptocurrencies.
 - Users will be able to follow other users.
 
-##Walkthrough
+## Walkthrough
 
 The navigation bar has 3 links.
 On the navigation bar, registered users and non-registered users will see 'Educryption' to the left. 'Login' and 'Sign Up' to the right.
@@ -40,7 +42,7 @@ To start, a user should sign-up or login for an account. A non-registered user w
 
 On the home page, a non-user can click a currency name to view information about that currency. A registered user will have a button to the right of the currency name to either add or remove the currency from their account.
 
-###Registering OR Logging in
+### Registering OR Logging in
 Upon login or registration completion, you will be taken to your profile page. 
 On the profile page, there are 2 buttons. 
 - The 'Delete' button will delete a user's account.
