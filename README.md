@@ -1,104 +1,59 @@
-# Capstone1
+#Educryption
 
-Project Proposal
+##Description
+Educryption is a place for users to add and follow a list of cryptocurrencies in which a user is interested.
+This is a full-stack application written with Python, Javascript, jQuery, Bootstrap, Flask, Postgresql, and Bootstrap for styling.
+This application utilizes the CoinMarketCap API.
+This application was created as a Capstone Project for the Springboard Software Engineering Program.
+A live version of this project can be found here: https://educryption.herokuapp.com/
 
+The repository for the Educryption can be found at: https://github.com/mgeurian/Capstone_One
 
+##Current Features
+- An unregistered user can search for a specific cryptocurrency.
+- An unregistered user can view information about a specific cryptocurrency.
 
-1. What goal will your website be designed to achieve? 
+- A Registered User (user) can register their information.
+- A user can log-in and log-out of their account.
+- A user can search for a specific cryptocurrency.
+- A user can view information about a specific cryptocurrency.
+- A user can add and remove cryptocurrencies.
+- A user can delete their account.
 
-This website will be designed with an aesthetic look to share information about cryptocurrencies so as not to overwhelm newcomers to the cryptocurrency world with ideas and words often associated with this topic.
+##Additional Future Features:
 
+- Users will be able to add currencies they own, along with amounts/values.
+- CoinMarketCap API will be utilized to get exchange information to allow users to link their exchange accounts.
+- Users will be able to view what other users are following.
+- Users will be able to blog and write articles about what they think of specific cryptocurrencies.
+- Users will be able to follow other users.
 
+##Walkthrough
 
-2. What kind of users will visit your site? In other words, what is the demographic of your users? 
+The navigation bar has 3 links.
+On the navigation bar, registered users and non-registered users will see 'Educryption' to the left. 'Login' and 'Sign Up' to the right.
 
-This site will be designed for all people with a desire to learn more about cryptocurrency.
+The title 'Educryption' will always bring you back to the home screen where a list of cryptocurrencies can be viewed.
+Your username will take you directly to your list of 'favorited' cryptocurrencies.
 
+To start, a user should sign-up or login for an account. A non-registered user will need to provide a first name, last name, email, username, and password to sign-up/register.
 
+On the home page, a non-user can click a currency name to view information about that currency. A registered user will have a button to the right of the currency name to either add or remove the currency from their account.
 
-3. What data do you plan on using? You may have not picked your actual API yet, which is fine, just outline what kind of data you would like it to contain. 
+###Registering OR Logging in
+Upon login or registration completion, you will be taken to your profile page. 
+On the profile page, there are 2 buttons. 
+- The 'Delete' button will delete a user's account.
+- The 'View All Currencies' button will take the user to the home page.
+Below these buttons will be a user's list of 'favorited' currencies, if any exist.
 
-The API chosen for this project is the ‘CoinMarketCap API’ (https://coinmarketcap.com/api/).
-Metadata offered such as logos, descriptions, official website URLs, social links, and technical documentation will be included.
+License
+MIT License
 
+Copyright (c) [2022] [Matt C Geurian]
 
-4. In brief, outline your approach to creating your project (knowing that you may not know everything in advance and that these details might change later). Answer questions like the ones below, but feel free to add more information: 
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
-a. What does your database schema look like?
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-Username: 	username (PK), 
-		password
-
-Currency: 	id (PK), 
-		name, 
-		symbol, 
-		category, 
-		slug, 
-		logo, 
-		description, 
-		tag, 
-		platform: (
-			id, 
-			name, 
-			symbol, 
-			slug)
-		 urls: 	(
-			website, 
-			technical documentation, 
-			reddit,
-			twitter)
-
-User_Currency:	id (PK),
-			username (FK),
-			currency_id (FK)
-
-
-
-b. What kinds of issues might you run into with your API? 
-
-With the free version of the API, there are:
-
-	a limited number of daily/monthly calls available
-	a limited number of endpoints
-	no historical data available
-	no exchange information available
-
-The tags available may not be included on all currencies. For example, Bitcoin runs the SHA256 hashing algorithm, whereas Groestlcoin uses the Groestl hashing algorithm. All currencies may not have a tag stating which hashing algorithms are used.
-
-
-c. Is there any sensitive information you need to secure
-
-Users will have an option to save cards  to their profile and view them later. But the ‘profile’ won’t contain any sensitive information aside from a password for authentication and authorization.
-
-
-d. What functionality will your app include?
-
-‘Cards’ will contain basic information on the currency that is contained on that card. 
-
-Users will be able to click on a ‘card’ and be taken to another page to view more information on that currency. These currency pages will only contain information for that currency. But will include additional links to outside resources for further study.
-
-Users will be able to create an account, be authenticated, and be authorized to view information specific to that user. Specific information will be cards that the user would like to track and/or study for later. 
-
-
-e. What will the user flow look like?
-
-Users will start at the homepage and can view currencies. Users have the option to login/register. Registering is the only way to access additional functionality. If the user decides to register, the user will be logged in and will be shown the user profile screen. (mostly empty at this time, stretch goals will include a short interactive “how-to” for using the site.)
-
-Users will be able to ‘favorite’ currencies from the ‘home_page’ OR ‘main_currency_page’. When a currency is ‘favorited’, that currency is added to their list of favorites and can be viewed on the user’s profile_page. Users will be able to delete favorites from their profile_page or the main_currency_page.
-
-
-f. What features make your site more than CRUD? Do you have any stretch goals?
-
-The site will have sort and filter functions to view different currencies based on their functions and for what they were made. Eventually incorporating charts into the currency pages. As well as showing market caps and dominance through pie charts. Users will also be able to make personal notes on currencies they have favorited.
-
-****************************************
-
-
-FUTURE upgrades
-Eventually, the following (with a paid API) would be nice to implement:
-
--  assets will have general information available and links to exchanges where they can purchase CCs.
-
--  ability to view exchange information
-
--  ability to view one's own CC ownership information.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
