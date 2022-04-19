@@ -49,7 +49,8 @@ On the profile page, there are 2 buttons.
 - The 'View All Currencies' button will take the user to the home page.
 Below these buttons will be a user's list of 'favorited' currencies, if any exist.
 
-License
+## License
+
 MIT License
 
 Copyright (c) [2022] [Matt C Geurian]
